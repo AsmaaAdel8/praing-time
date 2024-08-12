@@ -1,0 +1,12 @@
+*{
+    margin: 0%;
+    padding: 0;
+    box-sizing: border-box;
+    text-transform: capitalize;
+}
+body{
+    background-image: url(../images/مسجد.jpg);
+    background-size: cover;
+    direction: rtl;
+    text-align: center;
+}
