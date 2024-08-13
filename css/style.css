@@ -7,6 +7,13 @@
 body{
     background-image: url(../images/مسجد.jpg);
     background-size: cover;
+    background-position: fixed;
     direction: rtl;
     text-align: center;
+}
+#getCity{
+    text-align: center;
+    margin-top: 5em;
+    border-radius: 25%;
+    width: 50%;
 }

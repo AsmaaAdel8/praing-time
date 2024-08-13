@@ -7,25 +7,33 @@
     <meta name="viewport" content="width=768, initial-scale=1.0">
     <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/all.css">
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <title>Praing times</title>
 </head>
 <body>
     <div class="container">
+        <header>
+            <div class="row" id="select" style="margin: auto !important;">
+                <i class="fas fa-search col-2" style="margin-top: 3em; font-size: 30px;" id="search"></i>
+                <input type="text" placeholder="البجث بالمدينة"  class="col-7" id="getCity"/>
+            </div>
+        </header>
         <main class=" mt-5">
             <div id="time" class="row mt-5">
-                <div class="city col-5">
-                    <h2> 01من سيبتمبر  2024</h2>
-                    <h2>السويس / مصر</h2>
+                <div class="col-4" id="city">
+                    
                 </div>
-                <div class="timer col-7">
-                    <h2>متبقي على صلاة العصر</h2>
-                    <h1>00:02:25</h1>
+                <div class="col-5" id="timer">
+                    
+                </div>
+                <div id="another" style="font-size: 30px; direction: ltr; font-weight: 800;" class="col-3">
+
                 </div>
             </div><hr>
         </main>
         <section>
-            <div id="cards">
+            <div id="cards" class="m-auto">
 
             </div>
         </section>
