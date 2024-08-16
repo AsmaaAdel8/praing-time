@@ -13,33 +13,65 @@ getCity.addEventListener('input', (e) => {
         const {data} = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Eg&method=8`).then(response=> response.json())
         .catch ((error)=>
         console.error(error))
-        console.log(data);
+        // console.log(data);
         
     const{Asr,Fajr,Dhuhr,Isha,Maghrib}=data.timings ;
    
     // make a div to but the date english and time dinamcly 
     setInterval(()=>{
-        const CurrentTime=new Date().toLocaleTimeString();
+        // const moment = require('moment');
+        var CurrentTime= moment().format('HH:mm');//new Date().toLocaleString();
         const timer_title=document.getElementById('timer');
         // handle rest time for next pray
-        const rest_time=()=>{
-            return(CurrentTime-Fajr);
-        }
-       
-        // if condition to handle defalte case of swith 
+        
+        const rest_time=(current,next)=>{
+            if (!current || !next) {
+                throw new Error("Invalid input: both current and next times are required");
+              }
+
+            const [hours1, minutes1] = next.split(':').map(Number);// بعد ما فصلنا الوقت هنحوله كله لدقايقونطرحه بعدين نرجعه تاني ساعات
+            const [hours2, minutes2] = current.split(':').map(Number);
+
+            if (isNaN(hours1) || isNaN(minutes1) || isNaN(hours2) || isNaN(minutes2)) {
+                throw new Error("Invalid input: time format must be HH:MM");
+              }
+
+            const totalMinutes1 = hours1 * 60 + minutes1;
+            const totalMinutes2 = hours2 * 60 + minutes2;
+            
+            const diffMinutes = totalMinutes1 - totalMinutes2;
+            
+            var hours = Math.floor(diffMinutes / 60);
+            var minutes = diffMinutes % 60;
+
+            // make dicresess timer
+            minutes--;
+            if(minutes<=1){
+                hours--;
+                minutes=60;
+            }
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        };
+   
+        // if condition to handle defalte case of swith to see next pray
         const rest_Pray=()=>{
             if(CurrentTime < Fajr && CurrentTime > Isha && CurrentTime <= '24:00' ){
-                return`الفجر`;
+                return`<h2> متبقي حتى صلاة الفجر</h2>
+                <h2>${rest_time(CurrentTime,Fajr)}</<h2>`;
             }else if(CurrentTime < Dhuhr && CurrentTime > Fajr){
-                return`الظهر`;
+                return`<h2> متبقي حتى صلاة الظهر</h2>
+                <h2>${rest_time(CurrentTime,Dhuhr)}</<h2>`;
             }else if(CurrentTime < Asr && CurrentTime  > Dhuhr){
-                return`العصر`;
+                return`<h2> متبقي حتى صلاة العصر</h2>
+                <h2>${rest_time(CurrentTime,Asr)}</<h2>`;
             }else if(CurrentTime < Maghrib && CurrentTime > Asr){
-                return`المغرب`;
+                return`<h2> متبقي حتى صلاة المغرب</h2>
+                <h2>${rest_time(CurrentTime,Maghrib)}</<h2>`;
             }else if(CurrentTime < Isha && CurrentTime >  Maghrib){
-                return`العشاء`;
+                return`<h2> متبقي حتى صلاة العشاء</h2>
+                <h2>${rest_time(CurrentTime,Isha)}</<h2>`;
             }else{
-                return`الفجر`;
+                return`<h2> متبقي حتى صلاة الفجر</h2>`;
             }
         };
         // swich to make timer to current pray
@@ -47,29 +79,30 @@ getCity.addEventListener('input', (e) => {
        switch(CurrentTime){
             case Fajr:
                 return `<h2>حان الان موعد صلاة الفجر</h2>
-                <h2>${rest_time()}</<h2>`
+                <h2>الأن...</<h2>`
                 break;
             case Dhuhr:
                 return `<h2>حان الأن موعد صلاة الظهر </h2>
-                <h2>${rest_time()}</<h2>`
+                <h2>الأن...</<h2>`
                 break;
             case Asr:
                 return `<h2>حان الأن موعد صلاة العصر </h2>
-                <h2>${rest_time()}</<h2>`
+                <h2>الأن...</<h2>`
                 break;
             case Maghrib:
-                return `<h2>حان الأن موعد صلاةالمغرب </h2>
-                <h2>${rest_time()}</<h2>`
+                return `<h2> حان الأن موعد صلاة المغرب </h2>
+                <h2>الأن...</<h2>`
                 break;
             case Isha:
                 return `<h2>حان الأن موعد صلاة العشاء </h2>
-                <h2>${rest_time()}</<h2>`
+                <h2>الأن...</<h2>`
                 break;
             default:
-                return `<h2> متبقي حتى صلاة ${rest_Pray()}</h2>
-                <h2>${rest_time()}</<h2>`
+                return `${rest_Pray()}
+                <h2>${rest_time(CurrentTime,Fajr)}</<h2>`
         };};
         timer_title.innerHTML=tiltle();
+        // console.log(CurrentTime);
     },1000)
 
 const dataTiming=[
